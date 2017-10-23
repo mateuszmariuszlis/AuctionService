@@ -20,3 +20,5 @@ composer.json
 composer.lock
 phpunit.xml.dist
 
+.bowerrc
+web/vendor/

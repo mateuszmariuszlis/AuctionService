@@ -4,8 +4,16 @@
     <h1>Lista aukcji</h1>
     <h3>Super samochód</h3>
 {% for auction in auctions %}
-   <h3><a href="{{ url('auction_details',{"id": auction.id}) }}">{{ auction.title }}</a></h3><br>
-   {{ auction.description }}<br>
-   {{ auction.price }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4><a href="{{ url('auction_details',{"id": auction.id}) }}">{{ auction.title }}</a></h4>
+        </div>
+        <div class="panel-body">
+            <p>{{ auction.description }}</p>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item">Cena: {{ auction.price }} zł</li>
+        </ul>
+    </div>
 {% endfor %}
 {%  endblock %}
