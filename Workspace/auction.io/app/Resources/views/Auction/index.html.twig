@@ -2,18 +2,25 @@
 
 {%  block body %}
     <h1>Lista aukcji</h1>
-    <h3>Super samochód</h3>
-{% for auction in auctions %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4><a href="{{ url('auction_details',{"id": auction.id}) }}">{{ auction.title }}</a></h4>
+    {% for auction in auctions %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4><a href="{{ url('auction_details',{"id": auction.id}) }}">{{ auction.title }}</a></h4>
+            </div>
+            <div class="panel-body">
+                <p>{{ auction.description }}</p>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">Cena wywoławcza: {{ auction.startingPrice }} zł</li>
+                <li class="list-group-item">Cena: {{ auction.price }} zł</li>
+                <li class="list-group-item">Aukcja kończy się: {{ auction.expiresAt | date("Y-m-d h:m") }}</li>
+            </ul>
         </div>
-        <div class="panel-body">
-            <p>{{ auction.description }}</p>
+    {% else %}
+        <div class="panel panel-warning">
+            <div class="panel-body">
+                <h3>Niestety nie ma żadnej aktywnej aukcji.</h3>
+            </div>
         </div>
-        <ul class="list-group">
-            <li class="list-group-item">Cena: {{ auction.price }} zł</li>
-        </ul>
-    </div>
-{% endfor %}
+    {% endfor %}
 {%  endblock %}
