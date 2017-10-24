@@ -11,7 +11,7 @@
         <ul class="list-group">
             <li class="list-group-item">Cena wywoławcza: {{ auction.startingPrice }} zł</li>
             <li class="list-group-item">Cena: {{ auction.price }} zł</li>
-            <li class="list-group-item">Aukcja kończy się: {{ auction.expiresAt | date("Y-m-d h:m") }}</li>
+            <li class="list-group-item">Aukcja kończy się: {{ auction.expiresAt | date("Y-m-d H:i:s") }}</li>
         </ul>
     </div>
     <a class="btn btn-default pull-left" href="{{ url('auction_index') }}">Powrót</a>
@@ -27,7 +27,7 @@
     {{ form_end(finishForm) }}
 
     {{ form_start(buyForm, {"attr": {"class": "pull-left"}}) }}
-        {{ form_widget(buyForm.submit, {"attr": {"class": "btn-succes"}}) }}
+        {{ form_widget(buyForm.submit, {"attr": {"class": "btn-success"}}) }}
         {{ form_rest(buyForm) }}
     {{ form_end(buyForm) }}
     <div class="clearfix"></div>
