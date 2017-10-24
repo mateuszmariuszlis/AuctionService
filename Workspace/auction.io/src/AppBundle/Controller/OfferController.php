@@ -43,6 +43,8 @@ class OfferController extends Controller
         $entityManager->persist($offer);
         $entityManager->flush();
 
+        $this->addFlash("success", "Kupiłeś przedmiot {$auction->getTitle()} za kwotę {$offer->getPrice()} zł");
+
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }
 
@@ -61,14 +63,40 @@ class OfferController extends Controller
 
         $bidForm->handleRequest($request);
 
-        $offer
-            ->setType(Offer::TYPE_BID)
-            ->setAuction($auction);
+        if ($bidForm->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $lastOffer = $entityManager
+                ->getRepository(Offer::class)
+                ->findOneBy(["auction" => $auction], ["createdAt" => "DESC"]);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($offer);
-        $entityManager->flush();
+            if (isset($lastOffer)){
+                if ($offer->getPrice() <= $lastOffer->getPrice()){
+                    $this->addFlash("error", "Twoja oferta nie może być niższa niż {$lastOffer->getPrice()} zł");
 
+                    return$this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+                }
+            } else {
+                if ($offer->getPrice() < $auction->getStartingPrice()){
+                    $this->addFlash("error", "Twoja oferta nie może być niższa od ceny wywoławczej");
+
+                    return$this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+                }
+            }
+
+            $offer
+                ->setType(Offer::TYPE_BID)
+                ->setAuction($auction);
+
+
+            $entityManager->persist($offer);
+            $entityManager->flush();
+
+            $this->addFlash(
+                "success",
+                "Złożyłeś ofertę na przedmiot {$auction->getTitle()} za kwotę {$offer->getPrice()} zł");
+        } else {
+            $this->addFlash("error", "Nie udało się zalicytować przedmiotu {$auction->getTitle()}");
+        }
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }
 }
