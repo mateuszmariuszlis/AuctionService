@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Auction;
 use AppBundle\Form\AuctionType;
+use AppBundle\Form\BidType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,12 +56,18 @@ class AuctionController extends Controller
             ->add("submit", SubmitType::class, ["label" => "Kup"])
             ->getForm();
 
+        $bidForm = $this->createForm(
+            BidType::class,
+            null,
+            ["action" => $this->generateUrl("offer_bid", ["id" => $auction->getId()])]);
+
         return $this->render(
             "Auction/details.html.twig", [
                 "auction" => $auction,
                 "deleteForm" =>$deleteForm->createView(),
                 "finishForm" => $finishForm->createView(),
-                "buyForm" => $buyForm->createView()
+                "buyForm" => $buyForm->createView(),
+                "bidForm" => $bidForm->createView()
             ]);
     }
 
