@@ -30,4 +30,17 @@ class DateExtension extends \Twig_Extension
 
         return "za " . $interval->format("%h godz. %i min.");
     }
+
+    /**
+     * @param \DateTime $expiresAt
+     * @return string
+     */
+    public function auctionStyle(\DateTime $expiresAt)
+    {
+        if ($expiresAt < new \DateTime("+1 day")){
+            return "panel-danger";
+        }
+
+        return "panel-default";
+    }
 }

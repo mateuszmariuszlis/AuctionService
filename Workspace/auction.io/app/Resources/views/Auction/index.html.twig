@@ -3,7 +3,7 @@
 {%  block body %}
     <h1>Lista aukcji</h1>
     {% for auction in auctions %}
-        <div class="panel panel-default">
+        <div class="panel {{ auctionStyle(auction.expiresAt) }}">
             <div class="panel-heading">
                 <h4><a href="{{ url('auction_details',{"id": auction.id}) }}">{{ auction.title }}</a></h4>
             </div>
